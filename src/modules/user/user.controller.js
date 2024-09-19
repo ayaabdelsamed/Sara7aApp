@@ -6,10 +6,17 @@ const signup =async(req,res)=>{
     
     await userModel.insertMany(req.body)
 
-    sendEmail()
+    sendEmail(req.body.email)
     res.json({message:"success"})
 }
 
+const verify = async(req,res)=>{
+    await userModel.findOneAndUpdate({email:req.params.email},{verifyEmail:true})
+    req.json({message:"success"})
+
+}
+
 export{
-    signup
+    signup,
+    verify
 }

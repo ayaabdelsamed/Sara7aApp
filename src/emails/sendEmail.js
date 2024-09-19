@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer"
+import { emailTemplate } from "./emailTemplate.js";
 
-export const sendEmail = async()=>{
+export const sendEmail = async(email)=>{
 
     const transporter = nodemailer.createTransport({
         service:"gmail",
@@ -15,11 +16,11 @@ export const sendEmail = async()=>{
 
     const info = await transporter.sendMail({
         from: '"Route Node.js 👻" <aya.h.abdelsamed@gmail.com>', // sender address
-        to: "aya.abdelsamed11pp@gmail.com", // list of receivers
+        to: email, // list of receivers
         subject: "Hello ✔", // Subject line
-        html: "<b>Hello world from node.js course</b>", // html body
+        html: emailTemplate(email), // html body
     });
-    
+
     console.log("Message sent: %s", info.messageId);
 
 

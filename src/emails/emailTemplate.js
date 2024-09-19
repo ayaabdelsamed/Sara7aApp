@@ -1,6 +1,6 @@
 
 
-export const emailTemplate=()=>{
+export const emailTemplate=(email)=>{
     return `
     <!doctype html>
 <html lang="en">

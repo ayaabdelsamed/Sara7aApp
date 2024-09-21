@@ -1,6 +1,10 @@
 
 
+<<<<<<< HEAD
 export const emailTemplate=(token)=>{
+=======
+export const emailTemplate=(email)=>{
+>>>>>>> b97dc6313f8ff5f855c9338020f051fcf7d47893
     return `
     <!doctype html>
 <html lang="en">

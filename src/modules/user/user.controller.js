@@ -6,7 +6,7 @@ import { sendEmail } from "../../emails/sendEmail.js"
 
 const signup =async(req,res)=>{
     await userModel.insertMany(req.body)
-    //sendEmail(req.body.email)
+    sendEmail(req.body.email)
     res.json({message:"success"})
 }
 
@@ -14,7 +14,10 @@ const signin =async(req,res)=>{
     let user = await userModel.findOne({email:req.body.email})
     if(user&&bcrypt.compareSync(req.body.password,user.password)){
         let token = jwt.sign({userId:user._id,email:user.email},'aykey')
+        if(user.verifyEmail)
         res.json({message:"success",token})
+        else  
+        res.json({message:"verify email first"})
     }
     res.json({message:"incorrect mail or password"})
 }

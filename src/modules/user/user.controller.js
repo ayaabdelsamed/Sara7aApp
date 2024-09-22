@@ -15,11 +15,11 @@ const signin =async(req,res)=>{
     if(user&&bcrypt.compareSync(req.body.password,user.password)){
         let token = jwt.sign({userId:user._id,email:user.email},'aykey')
         if(user.verifyEmail)
-        res.json({message:"success",token})
+        return res.json({message:"success",token})
         else  
-        res.json({message:"verify email first"})
+        return res.json({message:"verify email first"})
     }
-    res.json({message:"incorrect mail or password"})
+    return res.json({message:"incorrect mail or password"})
 }
 
 const verify = (req,res)=>{

@@ -10,7 +10,9 @@ const addMsg = async(req,res)=>{
 }
 
 const allMsgs = async(req,res)=>{
-    let messages = await messageModel.find()
+
+    let messages = await messageModel.find({receivedId:req.user.userId})
+    
     res.json({message:'success',messages})
 
 }

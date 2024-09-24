@@ -11,4 +11,10 @@ app.use(messageRouter)
 app.get('/', (req, res) => res.send('Hello World!'))
 
 dbConnection()
+
+//global error handling:
+app.use((err,req,res,next)=>{
+    res.json({error:err})
+})
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

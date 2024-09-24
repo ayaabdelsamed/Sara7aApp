@@ -3,6 +3,7 @@ import { dbConnection } from './databases/dbConnection.js'
 import userRouter from './src/modules/user/user.routes.js'
 import messageRouter from './src/modules/message/message.routes.js'
 import { AppError } from './src/utils/appError.js'
+import { globalError } from './src/middleware/globalErrorMiddleware.js'
 const app = express()
 const port = 3000
 
@@ -22,9 +23,6 @@ app.use('*',(req,res,next)=>{
 })
 
 //global error handling:
-app.use((err,req,res,next)=>{
-    err.statusCode = err.statusCode || 500
-    res.status(err.statusCode).json({error:err.message})
-})
+app.use(globalError)
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

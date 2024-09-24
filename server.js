@@ -12,9 +12,17 @@ app.get('/', (req, res) => res.send('Hello World!'))
 
 dbConnection()
 
+//handle invalid routes مينفعش احطها فوق لازم في الاخر
+app.use('*',(req,res,next)=>{
+    //بس هنا دا response مش error ف مفدرش اديه لل next ال global error handling يعني
+   // res.json({message:`not found endPoint: ${req.originalUrl}` })
+   //هروح اختلق error انا
+    next(new Error(`not found endPoint: ${req.originalUrl}`))
+})
+
 //global error handling:
 app.use((err,req,res,next)=>{
-    res.json({error:err})
+    res.json({error:err.message})
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import { userModel } from "../../../databases/models/user.model.js"
 import { sendEmail } from "../../emails/sendEmail.js"
 import { catchError } from "../../middleware/catchError.js"
+import { AppError } from "../../utils/appError.js"
 
 
 
@@ -13,22 +14,23 @@ const signup =catchError(async(req,res)=>{
     res.json({message:"success"})
 })
 
-const signin =catchError(async(req,res)=>{
+const signin =catchError(async(req,res,next)=>{
     let user = await userModel.findOne({email:req.body.email})
     if(user&&bcrypt.compareSync(req.body.password,user.password)){
         let token = jwt.sign({userId:user._id,email:user.email},'aykey')
         if(user.verifyEmail)
-        return res.json({message:"success",token})
+            return res.json({message:"success",token})
         else  
-        return res.json({message:"verify email first"})
+            return next(new AppError("verify email first",401))
     }
-    return res.json({message:"incorrect mail or password"})
+    //return res.json({message:"incorrect mail or password"})
+    next(new AppError("incorrect mail or password",401))
 })
 
-const verify = catchError(async(req,res)=>{
+const verify = catchError(async(req,res,next)=>{
 
     jwt.verify(req.params.token,'myNameIsYotii',async(err,decoded)=>{
-        if(err) return res.json({message:"Not success"})
+        if(err) return next(new AppError(err,401))
             await userModel.findOneAndUpdate({email:decoded.email},{verifyEmail:true})
             res.json({message:"success"})
 

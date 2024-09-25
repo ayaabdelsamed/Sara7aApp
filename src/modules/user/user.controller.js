@@ -28,8 +28,7 @@ const signin =catchError(async(req,res,next)=>{
 })
 
 const verify = catchError(async(req,res,next)=>{
-
-    jwt.verify(req.params.token,'myNameIsYotii',async(err,decoded)=>{
+    jwt.verify(req.params.token,process.env.JWT_KEY,async(err,decoded)=>{
         if(err) return next(new AppError(err,401))
             await userModel.findOneAndUpdate({email:decoded.email},{verifyEmail:true})
             res.json({message:"success"})

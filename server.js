@@ -2,14 +2,18 @@ process.on('uncaughtException',(err)=>{
     console.log('error',err);
 })
 
+
 import express from 'express'
 import { dbConnection } from './databases/dbConnection.js'
 import userRouter from './src/modules/user/user.routes.js'
 import messageRouter from './src/modules/message/message.routes.js'
 import { AppError } from './src/utils/appError.js'
 import { globalError } from './src/middleware/globalErrorMiddleware.js'
+import dotenv from 'dotenv'
+dotenv.config()
 const app = express()
 const port = 3000
+
 
 app.use(express.json())
 app.use(userRouter)

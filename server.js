@@ -1,3 +1,7 @@
+process.on('uncaughtException',(err)=>{
+    console.log('error',err);
+})
+
 import express from 'express'
 import { dbConnection } from './databases/dbConnection.js'
 import userRouter from './src/modules/user/user.routes.js'
@@ -22,7 +26,10 @@ app.use('*',(req,res,next)=>{
     next(new AppError(`not found endPoint: ${req.originalUrl}`,404))
 })
 
-//global error handling:
+//global error handling: middleware
 app.use(globalError)
 
+process.on('unhandledRejection',(err)=>{
+    console.log('error',err);
+})
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

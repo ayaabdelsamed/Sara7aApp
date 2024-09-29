@@ -11,7 +11,7 @@ const addMsg = catchError(async(req,res)=>{
 
 })
 const allMsgs = catchError(async(req,res)=>{
-    let messages = await messageModel.find({receivedId:req.user.userId})
+    let messages = await messageModel.find({receivedId:req.params.id})
     res.json({message:'success',messages})
 
 })

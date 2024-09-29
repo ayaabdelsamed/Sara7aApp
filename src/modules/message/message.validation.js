@@ -6,8 +6,11 @@ const addMsgSchemaVal = Joi.object({
     receivedId: Joi.string().hex().length(24)
 })
 
-
+const paramsVal = Joi.object({
+    id: Joi.string().hex().length(24)
+})
 
 export{
     addMsgSchemaVal,
+    paramsVal
 }

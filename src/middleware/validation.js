@@ -7,8 +7,12 @@ export const validation = (Schema)=>{
         if(!error){
             next()
         }else{
-            res.json({message:"error",error : error.details})
-           // next(new AppError(error.details401,))
+            let errMsg=[]
+            error.details.forEach((val) => {
+                errMsg.push(val.message)
+            });
+           // res.json(errMsg)
+            next(new AppError(errMsg,401))
         }
     }
 

@@ -5,6 +5,6 @@ export const globalError = (err,req,res,next)=>{
     if(process.env.MODE == 'prod') {
         res.status(err.statusCode).json({error:err.message})
     } else {
-        res.status(err.statusCode).json({error:err.message,stack:err.stack})
+        res.status(err.statusCode).json({error:err.message , stack:err.stack})
     }
 }

@@ -29,7 +29,14 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage})
+function fileFilter (req, file, cb) {
+    if(file.mimetype.startsWith('image')){
+        cb(null,true)
+    }else{
+        cb(new AppError('images only',401),false)
+    }
+}
+const upload = multer({ storage,fileFilter})
 
 
 app.post('/photos',upload.single('img'),(req,res)=>{

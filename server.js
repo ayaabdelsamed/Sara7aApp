@@ -19,6 +19,7 @@ app.get('/', (req, res) => res.send('Hello World!'))
 
 import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
+import { photoModel } from './databases/models/photo.model.js';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -39,7 +40,9 @@ function fileFilter (req, file, cb) {
 const upload = multer({ storage,fileFilter})
 
 
-app.post('/photos',upload.single('img'),(req,res)=>{
+app.post('/photos',upload.single('img'),async(req,res)=>{
+    req.body.img = req.file.filename
+    await photoModel.insertMany(req.body)
     res.json({message:"success"})
 })
 

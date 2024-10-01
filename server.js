@@ -39,6 +39,7 @@ function fileFilter (req, file, cb) {
 }
 const upload = multer({ storage,fileFilter})
 
+app.use('/',express.static('uploads'))
 
 app.post('/photos',upload.single('img'),async(req,res)=>{
     req.body.img = req.file.filename
@@ -46,6 +47,13 @@ app.post('/photos',upload.single('img'),async(req,res)=>{
     res.json({message:"success"})
 })
 
+app.get('/photos',async(req,res)=>{
+    let photos = await photoModel.find()
+    // photos.forEach((val,index)=>{
+    //     val.img = process.env.BASE_URL+val.img
+    // })
+    res.json({message:'success',photos})
+})
 app.use(userRouter)
 app.use(messageRouter)
 

@@ -14,34 +14,15 @@ dotenv.config()
 const app = express()
 const port = 3000
 
+app.use('/',express.static('uploads'))
 app.use(express.json())
 app.get('/', (req, res) => res.send('Hello World!'))
 
-import multer from 'multer';
-import { v4 as uuidv4 } from 'uuid';
 import { photoModel } from './databases/models/photo.model.js';
+import { fileSingleUpload } from './src/fileUpload/upload.js';
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-    cb(null, 'uploads/')
-    },
-    filename: function (req, file, cb) {
-    cb(null, uuidv4() + '-' + file.originalname)
-    }
-})
 
-function fileFilter (req, file, cb) {
-    if(file.mimetype.startsWith('image')){
-        cb(null,true)
-    }else{
-        cb(new AppError('images only',401),false)
-    }
-}
-const upload = multer({ storage,fileFilter})
-
-app.use('/',express.static('uploads'))
-
-app.post('/photos',upload.single('img'),async(req,res)=>{
+app.post('/photos',fileSingleUpload('img'),async(req,res)=>{
     req.body.img = req.file.filename
     await photoModel.insertMany(req.body)
     res.json({message:"success"})
